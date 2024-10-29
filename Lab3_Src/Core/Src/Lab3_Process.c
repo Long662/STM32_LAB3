@@ -143,7 +143,7 @@ void Mode_1(void){
 			default: // DO NOT THING
 				break;
 		}
-		Update_Display(Main_Dur_count, Sub_Dur_count);
+		Update_Display(Main_Dur_count, Sub_Dur_count, 1);
 		setTimerSec(1000);
 	}
 }
@@ -199,12 +199,42 @@ void Mode_4(void){
 //----------------------------------------------
 // FSM LAB3
 //----------------------------------------------
+typedef void (*FSM_MODE)();
+FSM_MODE mode[4] = {Mode_1, Mode_2, Mode_3, Mode_4};
+uint8_t Mode_running = 0;
 uint8_t Seg_ind = 0;
 
 void Lab3_FSM_Traffic(void){
-	Mode_4();
+	fsm_for_input_processing();
+	if (Button1_State) {
+		Mode_running++;
+	}
+	else if (Button2_State) {
+		switch (mode){
+		case 1: // Do nothing
+			break;
+		case 2: // increase red duration
+			break;
+		case 3: // increase yellow duration
+			break;
+		case 4: // increase green duration
+			break;
+		}
+	}
+	else if (Button3_State) {
+		switch (mode){
+		case 1: // Do nothing
+			break;
+		case 2: // set red duration
+			break;
+		case 3: // set yellow duration
+			break;
+		case 4: // set green duration
+			break;
+		}
+	}
 	if (Seg_flag) {
-		Scan_Display(Seg_ind);
+		Scan_Display(Seg_ind, 2);
 		Seg_ind = (Seg_ind + 1) % 2;
 		setTimerScan7Seg(100);
 	}

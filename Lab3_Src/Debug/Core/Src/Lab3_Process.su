@@ -1,9 +1,0 @@
-Lab3_Process.c:17:6:setTimerSec	16	static
-Lab3_Process.c:25:6:setTimerScan7Seg	16	static
-Lab3_Process.c:33:6:setTimerBlinky	16	static
-Lab3_Process.c:39:6:timer_run	4	static
-Lab3_Process.c:65:6:Mode_1	8	static
-Lab3_Process.c:152:6:Mode_2	8	static
-Lab3_Process.c:168:6:Mode_3	8	static
-Lab3_Process.c:184:6:Mode_4	8	static
-Lab3_Process.c:204:6:Lab3_FSM_Traffic	8	static
