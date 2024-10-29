@@ -171,7 +171,7 @@ void Mode_3(void){
 	HAL_GPIO_WritePin(GREEN_0_GPIO_Port, GREEN_0_Pin, GPIO_PIN_SET);
 	HAL_GPIO_WritePin(RED_1_GPIO_Port, RED_1_Pin, GPIO_PIN_SET);
 	HAL_GPIO_WritePin(GREEN_1_GPIO_Port, GREEN_1_Pin, GPIO_PIN_SET);
-	// Blink red led in 2Hz
+	// Blink yellow led in 2Hz
 	if (Blinky_flag){
 		HAL_GPIO_TogglePin(LED_DEBUG_GPIO_Port, LED_DEBUG_Pin);
 		HAL_GPIO_TogglePin(YELLOW_0_GPIO_Port, YELLOW_0_Pin);
@@ -187,7 +187,7 @@ void Mode_4(void){
 	HAL_GPIO_WritePin(RED_0_GPIO_Port, RED_0_Pin, GPIO_PIN_SET);
 	HAL_GPIO_WritePin(YELLOW_1_GPIO_Port, YELLOW_1_Pin, GPIO_PIN_SET);
 	HAL_GPIO_WritePin(RED_1_GPIO_Port, RED_1_Pin, GPIO_PIN_SET);
-	// Blink red led in 2Hz
+	// Blink green led in 2Hz
 	if (Blinky_flag){
 		HAL_GPIO_TogglePin(LED_DEBUG_GPIO_Port, LED_DEBUG_Pin);
 		HAL_GPIO_TogglePin(GREEN_0_GPIO_Port, GREEN_0_Pin);
@@ -199,21 +199,30 @@ void Mode_4(void){
 //----------------------------------------------
 // FSM LAB3
 //----------------------------------------------
-typedef void (*FSM_MODE)();
+typedef void (*FSM_MODE)(void);
 FSM_MODE mode[4] = {Mode_1, Mode_2, Mode_3, Mode_4};
-uint8_t Mode_running = 0;
+uint8_t Mode_running = 1;
 uint8_t Seg_ind = 0;
+uint8_t Temp_Red_Duration, Temp_Yellow_Duration, Temp_Green_Duration;
 
 void Lab3_FSM_Traffic(void){
 	fsm_for_input_processing();
-	if (Button1_State) {
+	mode[Mode_running - 1]();
+	if ((Button1_State == BUTTON_PRESSED) && (Button1_State != Button1_State_Temp)) {
 		Mode_running++;
+		if (Mode_running > 4){
+			Mode_running = 1;
+		}
+		Button1_State = Button1_State_Temp;
+		Button2_State = Button2_State_Temp;
+		Button3_State = Button3_State_Temp;
 	}
-	else if (Button2_State) {
-		switch (mode){
+	else if (Button2_State == BUTTON_PRESSED) {
+		switch (Mode_running){
 		case 1: // Do nothing
 			break;
 		case 2: // increase red duration
+
 			break;
 		case 3: // increase yellow duration
 			break;
@@ -222,7 +231,7 @@ void Lab3_FSM_Traffic(void){
 		}
 	}
 	else if (Button3_State) {
-		switch (mode){
+		switch (Mode_running){
 		case 1: // Do nothing
 			break;
 		case 2: // set red duration
@@ -236,6 +245,6 @@ void Lab3_FSM_Traffic(void){
 	if (Seg_flag) {
 		Scan_Display(Seg_ind, 2);
 		Seg_ind = (Seg_ind + 1) % 2;
-		setTimerScan7Seg(100);
+		setTimerScan7Seg(500);
 	}
 }

@@ -10,29 +10,32 @@
 enum ButtonState Button1_State = BUTTON_RELEASED;
 enum ButtonState Button2_State = BUTTON_RELEASED;
 enum ButtonState Button3_State = BUTTON_RELEASED;
+enum ButtonState Button1_State_Temp = BUTTON_RELEASED;
+enum ButtonState Button2_State_Temp = BUTTON_RELEASED;
+enum ButtonState Button3_State_Temp = BUTTON_RELEASED;
 
 void fsm_for_input_processing(void){
 	switch(Button1_State | Button2_State | Button3_State){
 	case BUTTON_RELEASED:
 		if(is_button_pressed(0)){
-			Button1_State = BUTTON_PRESSED;
+			Button1_State_Temp = BUTTON_PRESSED;
 		}
-		else if(is_button_pressed(1)){
-			Button2_State = BUTTON_PRESSED;
+		if(is_button_pressed(1)){
+			Button2_State_Temp = BUTTON_PRESSED;
 		}
-		else if(is_button_pressed(2)){
-			Button3_State = BUTTON_PRESSED;
+		if(is_button_pressed(2)){
+			Button3_State_Temp = BUTTON_PRESSED;
 		}
 		break;
 	case BUTTON_PRESSED:
 		if(!is_button_pressed(0)){
-			Button1_State = BUTTON_RELEASED;
+			Button1_State_Temp = BUTTON_RELEASED;
 		}
-		else if(!is_button_pressed(1)){
-			Button2_State = BUTTON_RELEASED;
+		if(!is_button_pressed(1)){
+			Button2_State_Temp = BUTTON_RELEASED;
 		}
-		else if(!is_button_pressed(2)){
-			Button3_State = BUTTON_RELEASED;
+		if(!is_button_pressed(2)){
+			Button3_State_Temp = BUTTON_RELEASED;
 		}
 		break;
 	}
