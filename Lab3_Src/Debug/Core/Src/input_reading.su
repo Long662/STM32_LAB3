@@ -1,0 +1,2 @@
+input_reading.c:23:6:button_reading	16	static
+input_reading.c:33:15:is_button_presseed	16	static

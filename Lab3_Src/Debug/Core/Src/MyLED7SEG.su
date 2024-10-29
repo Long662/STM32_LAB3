@@ -1,0 +1,2 @@
+MyLED7SEG.c:12:6:LED7SEG_Init	24	static
+MyLED7SEG.c:36:6:LED7SEG_Write	16	static
