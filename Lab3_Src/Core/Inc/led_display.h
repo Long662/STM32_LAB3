@@ -14,7 +14,7 @@
 void Lab3_Led_Init(void);
 
 void Enable_led7seg(int num);
-void Update_Display(uint8_t main, uint8_t sub, uint8_t mode);
+void Update_Display(uint8_t main, uint8_t sub);
 void Scan_Display(uint8_t index, uint8_t mode);
 
 

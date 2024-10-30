@@ -1,4 +1,4 @@
 led_display.c:15:6:Lab3_Led_Init	56	static
 led_display.c:53:6:Update_Display	16	static
-led_display.c:72:6:Enable_led7seg	16	static
-led_display.c:87:6:Scan_Display	16	static
+led_display.c:62:6:Enable_led7seg	16	static
+led_display.c:77:6:Scan_Display	16	static

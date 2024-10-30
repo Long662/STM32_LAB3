@@ -47,26 +47,16 @@ void Lab3_Led_Init(void){
 //-----------------------------------------------------------------------
 // Led7Seg process
 //-----------------------------------------------------------------------
-int Main_led_buffer[2][2];
-int Sub_led_buffer[2][2];
+int Main_led_buffer[2];
+int Sub_led_buffer[2];
 
-void Update_Display(uint8_t main, uint8_t sub, uint8_t mode){
-	if (mode == 1){
-		// Update main road index
-		Main_led_buffer[0][0] = main / 10;
-		Main_led_buffer[0][1] = main % 10;
-		// Update sub road index
-		Sub_led_buffer[0][0] = sub / 10;
-		Sub_led_buffer[0][1] = sub % 10;
-	}
-	else {
-		// Update duration index
-		Main_led_buffer[1][0] = main / 10;
-		Main_led_buffer[1][1] = main % 10;
-		// Update mode index
-		Sub_led_buffer[1][0] = sub / 10;
-		Sub_led_buffer[1][1] = sub % 10;
-	}
+void Update_Display(uint8_t main, uint8_t sub){
+	// Update main road index
+	Main_led_buffer[0] = main / 10;
+	Main_led_buffer[1] = main % 10;
+	// Update sub road index
+	Sub_led_buffer[0] = sub / 10;
+	Sub_led_buffer[1] = sub % 10;
 }
 
 void Enable_led7seg(int num){
@@ -87,12 +77,12 @@ void Enable_led7seg(int num){
 void Scan_Display(uint8_t index, uint8_t mode) {
 	Enable_led7seg(index);
 	if (mode == 1){
-		LED7SEG_Write(&SEG1, Main_led_buffer[0][index]);
-		LED7SEG_Write(&SEG2, Sub_led_buffer[0][index]);
+		LED7SEG_Write(&SEG1, Main_led_buffer[index]);
+		LED7SEG_Write(&SEG2, Sub_led_buffer[index]);
 	}
 	else {
-		LED7SEG_Write(&SEG1, Main_led_buffer[1][index]);
-		LED7SEG_Write(&SEG2, Sub_led_buffer[1][index]);
+		LED7SEG_Write(&SEG1, Main_led_buffer[index]);
+		LED7SEG_Write(&SEG2, Sub_led_buffer[index]);
 	}
 
 }
