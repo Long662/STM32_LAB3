@@ -219,28 +219,42 @@ uint8_t Temp_Red_Duration, Temp_Yellow_Duration, Temp_Green_Duration;
 void Lab3_FSM_Traffic(void){
 	fsm_for_input_processing();
 	mode[1]();
-	if ((Button1_State == BUTTON_PRESSED)) {
+
+	// Action when button 1 is pressed
+	if ((Button1_State == BUTTON_PRESSED) && (Button1_State_Temp == BUTTON_RELEASED)) {
 		Mode_running++;
 		if (Mode_running >= 4){
 			Mode_running = 0;
 		}
+		Button1_State_Temp = Button1_State;
 	}
-	else if (Button2_State == BUTTON_PRESSED) {
+	else {
+		Button1_State_Temp = Button1_State;
+	}
+
+	// Action when button 2 is pressed
+	if ((Button2_State == BUTTON_PRESSED) && (Button2_State_Temp == BUTTON_RELEASED)) {
 		switch (Mode_running){
 		case 1: // Do nothing
 			break;
 		case 2: // increase red duration
-			RED_Dur_temp++;
+			RED_Dur_temp += 1;
 			break;
 		case 3: // increase yellow duration
-			YELLOW_Dur_temp++;
+			YELLOW_Dur_temp += 1;
 			break;
 		case 4: // increase green duration
-			GREEN_Dur_temp++;
+			GREEN_Dur_temp += 1;
 			break;
 		}
+		Button2_State_Temp = Button2_State;
 	}
-	else if (Button3_State) {
+	else {
+		Button2_State_Temp = Button2_State;
+	}
+
+	// Action when button 2 is pressed
+	if ((Button3_State == BUTTON_PRESSED) && (Button3_State_Temp == BUTTON_RELEASED)) {
 		switch (Mode_running){
 		case 1: // Do nothing
 			break;
@@ -251,7 +265,13 @@ void Lab3_FSM_Traffic(void){
 		case 4: // set green duration
 			break;
 		}
+		Button3_State_Temp = Button3_State;
 	}
+	else {
+		Button3_State_Temp = Button3_State;
+	}
+
+	// Scan display 7 segment
 	if (Seg_flag) {
 		Scan_Display(Seg_ind, 2);
 		Seg_ind = (Seg_ind + 1) % 2;
