@@ -24,7 +24,7 @@ Core/Src/Timer.o: ../Core/Src/Timer.c ../Core/Inc/Timer.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h \
  ../Core/Inc/input_reading.h ../Core/Inc/Lab3_process.h \
- ../Core/Inc/led_display.h ../Core/Inc/MyLED7SEG.h \
+ ../Core/Inc/Timer.h ../Core/Inc/led_display.h ../Core/Inc/MyLED7SEG.h \
  ../Core/Inc/input_processing.h
 
 ../Core/Inc/Timer.h:
@@ -82,6 +82,8 @@ Core/Src/Timer.o: ../Core/Src/Timer.c ../Core/Inc/Timer.h \
 ../Core/Inc/input_reading.h:
 
 ../Core/Inc/Lab3_process.h:
+
+../Core/Inc/Timer.h:
 
 ../Core/Inc/led_display.h:
 

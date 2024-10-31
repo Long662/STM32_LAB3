@@ -9,6 +9,7 @@
 #define INC_LAB3_PROCESS_H_
 
 #include "main.h"
+#include "Timer.h"
 #include "led_display.h"
 #include "input_processing.h"
 

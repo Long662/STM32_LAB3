@@ -6,47 +6,7 @@
  */
 //----------------------------------------------
 #include "Lab3_Process.h"
-//----------------------------------------------
-// Timer for timing task
-//----------------------------------------------
-// Set Timer for count 1 secons
-uint8_t Sec_counter;
-uint8_t Sec_flag = 0;
-uint8_t TIMER_CYCLE = 10;
 
-void setTimerSec(int duration){
-	Sec_counter = duration / TIMER_CYCLE;
-	Sec_flag = 0;
-}
-
-// Set Timer for scan LED7SEG
-uint8_t Seg_counter;
-uint8_t Seg_flag = 0;
-void setTimerScan7Seg(int duration){
-	Seg_counter = duration / TIMER_CYCLE;
-	Seg_flag = 0;
-}
-
-// Set Timer for blinky led 2Hz
-uint8_t Blink_counter;
-uint8_t Blinky_flag = 0;
-void setTimerBlinky(int duration){
-	Blink_counter = duration / TIMER_CYCLE;
-	Blinky_flag = 0;
-}
-
-// Timer function
-void timer_run(){
-	if (!(--Sec_counter)){
-		Sec_flag = 1;
-	}
-	if (!(--Seg_counter)){
-		Seg_flag = 1;
-	}
-	if (!(--Blink_counter)){
-		Blinky_flag = 1;
-	}
-}
 //----------------------------------------------
 // Mode running in LAB3
 //----------------------------------------------
@@ -223,7 +183,7 @@ void Mode_4(void){
 typedef void (*FSM_MODE)(void);
 FSM_MODE mode[4] = {Mode_1, Mode_2, Mode_3, Mode_4};
 uint8_t Mode_running;
-uint32_t Seg_ind = 0;
+uint32_t Seg_ind;
 uint8_t Temp_Red_Duration, Temp_Yellow_Duration, Temp_Green_Duration;
 
 void Lab3_FSM_Traffic(void){
@@ -305,6 +265,6 @@ void Lab3_FSM_Traffic(void){
 	if (Seg_flag) {
 		Scan_Display(Seg_ind, 2);
 		Seg_ind = (Seg_ind + 1) % 2;
-		setTimerScan7Seg(100);
+		setTimerScan7Seg(500);
 	}
 }
