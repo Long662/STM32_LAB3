@@ -4,6 +4,6 @@ Lab3_Process.c:33:6:setTimerBlinky	16	static
 Lab3_Process.c:39:6:timer_run	4	static
 Lab3_Process.c:68:6:Mode_1	8	static
 Lab3_Process.c:155:6:Mode_2	8	static
-Lab3_Process.c:173:6:Mode_3	8	static
-Lab3_Process.c:192:6:Mode_4	8	static
-Lab3_Process.c:219:6:Lab3_FSM_Traffic	8	static
+Lab3_Process.c:175:6:Mode_3	8	static
+Lab3_Process.c:195:6:Mode_4	8	static
+Lab3_Process.c:221:6:Lab3_FSM_Traffic	8	static

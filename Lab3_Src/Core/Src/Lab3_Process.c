@@ -158,8 +158,10 @@ void Mode_2(void){
 	HAL_GPIO_WritePin(GREEN_0_GPIO_Port, GREEN_0_Pin, GPIO_PIN_SET);
 	HAL_GPIO_WritePin(YELLOW_1_GPIO_Port, YELLOW_1_Pin, GPIO_PIN_SET);
 	HAL_GPIO_WritePin(GREEN_1_GPIO_Port, GREEN_1_Pin, GPIO_PIN_SET);
+
 	// Update duration in display
 	Update_Display(RED_Dur_temp, 2);
+
 	// Blink red led in 2Hz
 	if (Blinky_flag){
 		HAL_GPIO_TogglePin(LED_DEBUG_GPIO_Port, LED_DEBUG_Pin);
@@ -171,14 +173,15 @@ void Mode_2(void){
 
 //**** MODE 3 ****
 void Mode_3(void){
-	YELLOW_Dur_temp = YELLOW_Dur_count;
 	// Turn of all traffic LED
 	HAL_GPIO_WritePin(RED_0_GPIO_Port, RED_0_Pin, GPIO_PIN_SET);
 	HAL_GPIO_WritePin(GREEN_0_GPIO_Port, GREEN_0_Pin, GPIO_PIN_SET);
 	HAL_GPIO_WritePin(RED_1_GPIO_Port, RED_1_Pin, GPIO_PIN_SET);
 	HAL_GPIO_WritePin(GREEN_1_GPIO_Port, GREEN_1_Pin, GPIO_PIN_SET);
+
 	// Update duration in display
 	Update_Display(YELLOW_Dur_temp, 3);
+
 	// Blink yellow led in 2Hz
 	if (Blinky_flag){
 		HAL_GPIO_TogglePin(LED_DEBUG_GPIO_Port, LED_DEBUG_Pin);
@@ -190,7 +193,6 @@ void Mode_3(void){
 
 //**** MODE 4 ****
 void Mode_4(void){
-	GREEN_Dur_temp = GREEN_Dur_count;
 	// Turn of all traffic LED
 	HAL_GPIO_WritePin(YELLOW_0_GPIO_Port, YELLOW_0_Pin, GPIO_PIN_SET);
 	HAL_GPIO_WritePin(RED_0_GPIO_Port, RED_0_Pin, GPIO_PIN_SET);
@@ -217,9 +219,11 @@ uint32_t Seg_ind = 0;
 uint8_t Temp_Red_Duration, Temp_Yellow_Duration, Temp_Green_Duration;
 
 void Lab3_FSM_Traffic(void){
+	//-------READING INPUT AND CALL FUNCTION POINTER-------
 	fsm_for_input_processing();
-	mode[1]();
+	mode[Mode_running]();
 
+	//-------BUTTON ACTION-------
 	// Action when button 1 is pressed
 	if ((Button1_State == BUTTON_PRESSED) && (Button1_State_Temp == BUTTON_RELEASED)) {
 		Mode_running++;
@@ -228,50 +232,48 @@ void Lab3_FSM_Traffic(void){
 		}
 		Button1_State_Temp = Button1_State;
 	}
-	else {
-		Button1_State_Temp = Button1_State;
-	}
-
 	// Action when button 2 is pressed
-	if ((Button2_State == BUTTON_PRESSED) && (Button2_State_Temp == BUTTON_RELEASED)) {
+	else if ((Button2_State == BUTTON_PRESSED) && (Button2_State_Temp == BUTTON_RELEASED)) {
 		switch (Mode_running){
 		case 1: // Do nothing
 			break;
 		case 2: // increase red duration
-			RED_Dur_temp += 1;
+			RED_Dur_temp++;
 			break;
 		case 3: // increase yellow duration
-			YELLOW_Dur_temp += 1;
+			YELLOW_Dur_temp++;
 			break;
 		case 4: // increase green duration
-			GREEN_Dur_temp += 1;
+			GREEN_Dur_temp++;
 			break;
 		}
 		Button2_State_Temp = Button2_State;
 	}
-	else {
-		Button2_State_Temp = Button2_State;
-	}
-
 	// Action when button 2 is pressed
-	if ((Button3_State == BUTTON_PRESSED) && (Button3_State_Temp == BUTTON_RELEASED)) {
+	else if ((Button3_State == BUTTON_PRESSED) && (Button3_State_Temp == BUTTON_RELEASED)) {
 		switch (Mode_running){
 		case 1: // Do nothing
 			break;
 		case 2: // set red duration
+			RED_Dur_count = RED_Dur_temp;
 			break;
 		case 3: // set yellow duration
+			YELLOW_Dur_count = YELLOW_Dur_temp;
 			break;
 		case 4: // set green duration
+			GREEN_Dur_count = GREEN_Dur_temp;
 			break;
 		}
 		Button3_State_Temp = Button3_State;
 	}
+	// Action when no button is pressed or button is being hold
 	else {
+		Button1_State_Temp = Button1_State;
+		Button2_State_Temp = Button2_State;
 		Button3_State_Temp = Button3_State;
 	}
 
-	// Scan display 7 segment
+	//-------DISPLAY-------
 	if (Seg_flag) {
 		Scan_Display(Seg_ind, 2);
 		Seg_ind = (Seg_ind + 1) % 2;
