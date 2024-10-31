@@ -222,7 +222,7 @@ void Mode_4(void){
 //----------------------------------------------
 typedef void (*FSM_MODE)(void);
 FSM_MODE mode[4] = {Mode_1, Mode_2, Mode_3, Mode_4};
-uint8_t Mode_running = 0;
+uint8_t Mode_running;
 uint32_t Seg_ind = 0;
 uint8_t Temp_Red_Duration, Temp_Yellow_Duration, Temp_Green_Duration;
 
@@ -246,13 +246,13 @@ void Lab3_FSM_Traffic(void){
 		case 0: // Do nothing
 			break;
 		case 1: // increase red duration
-			RED_Dur_temp += 1;
+			RED_Dur_temp = (RED_Dur_temp == 99) ? 99 : (RED_Dur_temp + 1);
 			break;
 		case 2: // increase yellow duration
-			YELLOW_Dur_temp += 1;
+			YELLOW_Dur_temp = (YELLOW_Dur_temp == 99) ? 99 : (YELLOW_Dur_temp + 1);
 			break;
 		case 3: // increase green duration
-			GREEN_Dur_temp += 1;
+			GREEN_Dur_temp = (GREEN_Dur_temp == 99) ? 99 : (GREEN_Dur_temp + 1);
 			break;
 		}
 		Button_State_Temp[1] = Button_State[1];
@@ -264,13 +264,13 @@ void Lab3_FSM_Traffic(void){
 		case 0: // Do nothing
 			break;
 		case 1: // increase red duration
-			RED_Dur_temp -= 1;
+			RED_Dur_temp = (RED_Dur_temp == 1) ? 1 : (RED_Dur_temp - 1);
 			break;
 		case 2: // increase yellow duration
-			YELLOW_Dur_temp -= 1;
+			YELLOW_Dur_temp = (YELLOW_Dur_temp == 1) ? 1 : (YELLOW_Dur_temp - 1);
 			break;
 		case 3: // increase green duration
-			GREEN_Dur_temp -= 1;
+			GREEN_Dur_temp = (GREEN_Dur_temp == 1) ? 1 : (GREEN_Dur_temp - 1);
 			break;
 		}
 		Button_State_Temp[2] = Button_State[2];
