@@ -6,4 +6,4 @@ Lab3_Process.c:68:6:Mode_1	8	static
 Lab3_Process.c:155:6:Mode_2	8	static
 Lab3_Process.c:175:6:Mode_3	8	static
 Lab3_Process.c:195:6:Mode_4	8	static
-Lab3_Process.c:221:6:Lab3_FSM_Traffic	8	static
+Lab3_Process.c:229:6:Lab3_FSM_Traffic	16	static

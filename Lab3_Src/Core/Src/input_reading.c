@@ -8,7 +8,7 @@
 
 #include "main.h"
 
-#define NO_OF_BUTTONS	3
+#define NO_OF_BUTTONS	4
 
 #define BUTTON_IS_PRESSED				GPIO_PIN_RESET
 #define BUTTON_IS_RELEASED				GPIO_PIN_SET
@@ -18,7 +18,7 @@ static GPIO_PinState	buttonBuffer[NO_OF_BUTTONS];
 static GPIO_PinState debounceButtonBuffer1[NO_OF_BUTTONS];
 static GPIO_PinState debounceButtonBuffer2[NO_OF_BUTTONS];
 // define pinout of button
-static uint16_t Button_Pin[NO_OF_BUTTONS] = {BUTTON_1_Pin, BUTTON_2_Pin, BUTTON_3_Pin};
+static uint16_t Button_Pin[NO_OF_BUTTONS] = {BUTTON_1_Pin, BUTTON_2_Pin, BUTTON_3_Pin, BUTTON_4_Pin};
 
 void button_reading(void){
 	for (int i = 0; i < NO_OF_BUTTONS; i++) {

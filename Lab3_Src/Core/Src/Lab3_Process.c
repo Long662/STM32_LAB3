@@ -198,8 +198,10 @@ void Mode_4(void){
 	HAL_GPIO_WritePin(RED_0_GPIO_Port, RED_0_Pin, GPIO_PIN_SET);
 	HAL_GPIO_WritePin(YELLOW_1_GPIO_Port, YELLOW_1_Pin, GPIO_PIN_SET);
 	HAL_GPIO_WritePin(RED_1_GPIO_Port, RED_1_Pin, GPIO_PIN_SET);
+
 	// Update duration in display
 	Update_Display(GREEN_Dur_temp, 4);
+
 	// Blink green led in 2Hz
 	if (Blinky_flag){
 		HAL_GPIO_TogglePin(LED_DEBUG_GPIO_Port, LED_DEBUG_Pin);
@@ -207,6 +209,12 @@ void Mode_4(void){
 		HAL_GPIO_TogglePin(GREEN_1_GPIO_Port, GREEN_1_Pin);
 		setTimerBlinky(500); // 500ms - 2Hz
 	}
+
+	// Set Main_led and Sub_led to the first case
+	Main_led = RED;
+	Sub_led = GREEN;
+	Main_Dur_count = RED_Dur_count;
+	Sub_Dur_count = GREEN_Dur_count;
 }
 
 //----------------------------------------------
@@ -225,52 +233,72 @@ void Lab3_FSM_Traffic(void){
 
 	//-------BUTTON ACTION-------
 	// Action when button 1 is pressed
-	if ((Button1_State == BUTTON_PRESSED) && (Button1_State_Temp == BUTTON_RELEASED)) {
+	if ((Button_State[0] == BUTTON_PRESSED) && (Button_State_Temp[0] == BUTTON_RELEASED)) {
 		Mode_running++;
 		if (Mode_running >= 4){
 			Mode_running = 0;
 		}
-		Button1_State_Temp = Button1_State;
+		Button_State_Temp[0] = Button_State[0];
 	}
 	// Action when button 2 is pressed
-	else if ((Button2_State == BUTTON_PRESSED) && (Button2_State_Temp == BUTTON_RELEASED)) {
+	else if ((Button_State[1] == BUTTON_PRESSED) && (Button_State_Temp[1] == BUTTON_RELEASED)) {
 		switch (Mode_running){
-		case 1: // Do nothing
+		case 0: // Do nothing
 			break;
-		case 2: // increase red duration
-			RED_Dur_temp++;
+		case 1: // increase red duration
+			RED_Dur_temp += 1;
 			break;
-		case 3: // increase yellow duration
-			YELLOW_Dur_temp++;
+		case 2: // increase yellow duration
+			YELLOW_Dur_temp += 1;
 			break;
-		case 4: // increase green duration
-			GREEN_Dur_temp++;
+		case 3: // increase green duration
+			GREEN_Dur_temp += 1;
 			break;
 		}
-		Button2_State_Temp = Button2_State;
+		Button_State_Temp[1] = Button_State[1];
 	}
-	// Action when button 2 is pressed
-	else if ((Button3_State == BUTTON_PRESSED) && (Button3_State_Temp == BUTTON_RELEASED)) {
+
+	// Action when button 3 is pressed
+	else if ((Button_State[2] == BUTTON_PRESSED) && (Button_State_Temp[2] == BUTTON_RELEASED)) {
 		switch (Mode_running){
-		case 1: // Do nothing
+		case 0: // Do nothing
 			break;
-		case 2: // set red duration
+		case 1: // increase red duration
+			RED_Dur_temp -= 1;
+			break;
+		case 2: // increase yellow duration
+			YELLOW_Dur_temp -= 1;
+			break;
+		case 3: // increase green duration
+			GREEN_Dur_temp -= 1;
+			break;
+		}
+		Button_State_Temp[2] = Button_State[2];
+	}
+
+	// Action when button 4 is pressed
+	else if ((Button_State[3] == BUTTON_PRESSED) && (Button_State_Temp[3] == BUTTON_RELEASED)) {
+		switch (Mode_running){
+		case 0: // Do nothing
+			break;
+		case 1: // set red duration
 			RED_Dur_count = RED_Dur_temp;
 			break;
-		case 3: // set yellow duration
+		case 2: // set yellow duration
 			YELLOW_Dur_count = YELLOW_Dur_temp;
 			break;
-		case 4: // set green duration
+		case 3: // set green duration
 			GREEN_Dur_count = GREEN_Dur_temp;
 			break;
 		}
-		Button3_State_Temp = Button3_State;
+		Button_State_Temp[3] = Button_State[3];
 	}
-	// Action when no button is pressed or button is being hold
+
+	// Action else
 	else {
-		Button1_State_Temp = Button1_State;
-		Button2_State_Temp = Button2_State;
-		Button3_State_Temp = Button3_State;
+		for (int i = 0; i < 4; i++){
+			Button_State_Temp[i] = Button_State[i];
+		}
 	}
 
 	//-------DISPLAY-------

@@ -92,6 +92,8 @@ void Error_Handler(void);
 #define BUTTON_2_GPIO_Port GPIOA
 #define BUTTON_3_Pin GPIO_PIN_10
 #define BUTTON_3_GPIO_Port GPIOA
+#define BUTTON_4_Pin GPIO_PIN_11
+#define BUTTON_4_GPIO_Port GPIOA
 #define EN1_1_Pin GPIO_PIN_12
 #define EN1_1_GPIO_Port GPIOA
 #define EN1_2_Pin GPIO_PIN_13
