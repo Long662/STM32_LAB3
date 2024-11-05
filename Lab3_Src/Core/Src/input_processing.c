@@ -9,6 +9,7 @@
 
 enum ButtonState Button_State[4] = {BUTTON_RELEASED, BUTTON_RELEASED, BUTTON_RELEASED, BUTTON_RELEASED};
 enum ButtonState Button_State_Temp[4] = {BUTTON_RELEASED, BUTTON_RELEASED, BUTTON_RELEASED, BUTTON_RELEASED};
+uint8_t Actual_Button_State[4] = {0, 0, 0, 0};
 
 void fsm_for_input_processing(void){
     for(int i = 0; i < 4; i++) {
@@ -24,5 +25,12 @@ void fsm_for_input_processing(void){
                 }
                 break;
         }
+        if((Button_State_Temp[i] == BUTTON_RELEASED) && (Button_State[i] == BUTTON_PRESSED)) {
+        	Actual_Button_State[i] = 1;
+        }
+        else {
+        	Actual_Button_State[i] = 0;
+        }
+        Button_State_Temp[i] = Button_State[i];
     }
 }

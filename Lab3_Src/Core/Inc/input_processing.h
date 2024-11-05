@@ -12,8 +12,10 @@
 #include "input_reading.h"
 
 enum ButtonState{BUTTON_RELEASED = 0, BUTTON_PRESSED = 1};
-extern enum ButtonState Button_State[4];
-extern enum ButtonState Button_State_Temp[4];
+enum ButtonState Button_State[4];
+enum ButtonState Button_State_Temp[4];
+
+extern uint8_t Actual_Button_State[4];
 
 void fsm_for_input_processing(void);
 
