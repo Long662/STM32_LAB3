@@ -27,6 +27,9 @@ void Lab3_Led_Init(void){
 	HAL_GPIO_WritePin(GPIOA, EN2_1_Pin, GPIO_PIN_SET);
 	HAL_GPIO_WritePin(GPIOA, EN2_2_Pin, GPIO_PIN_SET);
 
+	// Turn off LED DEBUG
+	HAL_GPIO_WritePin(LED_DEBUG_GPIO_Port, LED_DEBUG_Pin, GPIO_PIN_SET);
+
 	// Init 2 led 7seg for 2 road
 	LED7SEG_Init(&SEG1,	GPIOB, SEG1_0_Pin,
 						GPIOB, SEG1_1_Pin,

@@ -12,10 +12,11 @@
 //----------------------------------------------
 //**** MODE 1 ****
 // Init Duration for each led in the main road (second)
-uint8_t RED_Dur_count = 1;
+uint8_t RED_Dur_count = 2;
 uint8_t YELLOW_Dur_count = 1;
 uint8_t GREEN_Dur_count = 1;
-uint8_t Main_Dur_count = 1;
+// Duration for counting in mode 1
+uint8_t Main_Dur_count = 2;
 uint8_t Sub_Dur_count = 1;
 
 enum Led_state{RED, GREEN, YELLOW};
@@ -118,7 +119,6 @@ void Mode_2(void){
 
 	// Blink red led in 2Hz
 	if (Blinky_flag){
-		HAL_GPIO_TogglePin(LED_DEBUG_GPIO_Port, LED_DEBUG_Pin);
 		HAL_GPIO_TogglePin(RED_0_GPIO_Port, RED_0_Pin);
 		HAL_GPIO_TogglePin(RED_1_GPIO_Port, RED_1_Pin);
 		setTimerBlinky(500); // 500ms - 2Hz
@@ -135,7 +135,6 @@ void Mode_3(void){
 
 	// Blink yellow led in 2Hz
 	if (Blinky_flag){
-		HAL_GPIO_TogglePin(LED_DEBUG_GPIO_Port, LED_DEBUG_Pin);
 		HAL_GPIO_TogglePin(YELLOW_0_GPIO_Port, YELLOW_0_Pin);
 		HAL_GPIO_TogglePin(YELLOW_1_GPIO_Port, YELLOW_1_Pin);
 		setTimerBlinky(500); // 500ms - 2Hz
@@ -152,12 +151,12 @@ void Mode_4(void){
 
 	// Blink green led in 2Hz
 	if (Blinky_flag){
-		HAL_GPIO_TogglePin(LED_DEBUG_GPIO_Port, LED_DEBUG_Pin);
 		HAL_GPIO_TogglePin(GREEN_0_GPIO_Port, GREEN_0_Pin);
 		HAL_GPIO_TogglePin(GREEN_1_GPIO_Port, GREEN_1_Pin);
 		setTimerBlinky(500); // 500ms - 2Hz
 	}
 }
+
 
 //----------------------------------------------
 // FSM LAB3
@@ -166,11 +165,14 @@ typedef void (*FSM_MODE)(void);
 FSM_MODE mode[4] = {Mode_1, Mode_2, Mode_3, Mode_4};
 uint8_t Mode_running = 0;
 uint8_t Seg_ind;
-uint8_t RED_Dur_temp = 1;
+uint8_t RED_Dur_temp = 2;
 uint8_t YELLOW_Dur_temp = 1;
 uint8_t GREEN_Dur_temp = 1;
+// Flag to show that Duration is seted
+uint8_t Is_Dur_Set = 1;
 
 void Lab3_FSM_Traffic(void){
+
 	//-------READING INPUT AND CALL FUNCTION POINTER-------
 	fsm_for_input_processing();
 	mode[Mode_running]();
@@ -178,6 +180,7 @@ void Lab3_FSM_Traffic(void){
 	//-------BUTTON ACTION-------
 	// Action when button 1 is pressed
 	if (Actual_Button_State[0]) {
+		HAL_GPIO_WritePin(LED_DEBUG_GPIO_Port, LED_DEBUG_Pin, GPIO_PIN_SET);
 		Mode_running++;
 		if (Mode_running >= 4){
 			Mode_running = 0;
@@ -190,40 +193,68 @@ void Lab3_FSM_Traffic(void){
 	}
 	// Action when button 2 is pressed
 	else if (Actual_Button_State[1]) {
+		HAL_GPIO_WritePin(LED_DEBUG_GPIO_Port, LED_DEBUG_Pin, GPIO_PIN_SET);
 		switch (Mode_running){
 		case 0: // Do nothing
 			break;
 		case 1: // increase red duration
-			RED_Dur_temp = (RED_Dur_temp == 99) ? 99 : (RED_Dur_temp + 1);
+			if (RED_Dur_temp < 99) {
+				RED_Dur_temp += 1;
+				GREEN_Dur_temp = RED_Dur_temp - YELLOW_Dur_temp;
+			}
 			break;
 		case 2: // increase yellow duration
-			YELLOW_Dur_temp = (YELLOW_Dur_temp == 99) ? 99 : (YELLOW_Dur_temp + 1);
+			if (YELLOW_Dur_temp < RED_Dur_temp) {
+				YELLOW_Dur_temp += 1;
+				GREEN_Dur_temp = RED_Dur_temp - YELLOW_Dur_temp;
+			}
 			break;
 		case 3: // increase green duration
-			GREEN_Dur_temp = (GREEN_Dur_temp == 99) ? 99 : (GREEN_Dur_temp + 1);
+			if (GREEN_Dur_temp < RED_Dur_temp) {
+				GREEN_Dur_temp += 1;
+				YELLOW_Dur_temp = RED_Dur_temp - GREEN_Dur_temp;
+			}
+			break;
+		default: // Do nothing
 			break;
 		}
 	}
-
 	// Action when button 3 is pressed
 	else if (Actual_Button_State[2]) {
+		HAL_GPIO_WritePin(LED_DEBUG_GPIO_Port, LED_DEBUG_Pin, GPIO_PIN_SET);
 		switch (Mode_running){
 		case 0: // Do nothing
 			break;
-		case 1: // increase red duration
-			RED_Dur_temp = (RED_Dur_temp == 1) ? 1 : (RED_Dur_temp - 1);
+		case 1: // decrease red duration
+			if (RED_Dur_temp > 2) {
+				RED_Dur_temp -= 1;
+				if (GREEN_Dur_temp >= 1) {
+					GREEN_Dur_temp -= 1;
+				}
+				else {
+					YELLOW_Dur_temp -= 1;
+				}
+			}
 			break;
-		case 2: // increase yellow duration
-			YELLOW_Dur_temp = (YELLOW_Dur_temp == 1) ? 1 : (YELLOW_Dur_temp - 1);
+		case 2: // decrease yellow duration
+			if (YELLOW_Dur_temp > 1) {
+				YELLOW_Dur_temp -= 1;
+				GREEN_Dur_temp = RED_Dur_temp - YELLOW_Dur_temp;
+			}
 			break;
-		case 3: // increase green duration
-			GREEN_Dur_temp = (GREEN_Dur_temp == 1) ? 1 : (GREEN_Dur_temp - 1);
+		case 3: // decrease green duration
+			if (GREEN_Dur_temp > 1) {
+				GREEN_Dur_temp -= 1;
+				YELLOW_Dur_temp = RED_Dur_temp - GREEN_Dur_temp;
+			}
+			break;
+		default: // Do nothing
 			break;
 		}
 	}
-
 	// Action when button 4 is pressed
 	else if (Actual_Button_State[4]) {
+		HAL_GPIO_WritePin(LED_DEBUG_GPIO_Port, LED_DEBUG_Pin, GPIO_PIN_RESET);
 		switch (Mode_running){
 		case 0: // Do nothing
 			break;
@@ -236,14 +267,15 @@ void Lab3_FSM_Traffic(void){
 		case 3: // set green duration
 			GREEN_Dur_count = GREEN_Dur_temp;
 			break;
+		default: // Do nothing
+			break;
 		}
 	}
-
 
 	//-------DISPLAY-------
 	if (Seg_flag) {
 		switch(Mode_running) {
-		case 0:
+		case 0: // Do nothing
 			break;
 		case 1:
 			Update_Display(RED_Dur_temp, 2);
@@ -254,9 +286,11 @@ void Lab3_FSM_Traffic(void){
 		case 3:
 			Update_Display(GREEN_Dur_temp, 4);
 			break;
+		default: // Do nothing
+			break;
 		}
 		Scan_Display(Seg_ind, 2);
 		Seg_ind = (Seg_ind + 1) % 2;
-		setTimerScan7Seg(500);
+		setTimerScan7Seg(250);
 	}
 }

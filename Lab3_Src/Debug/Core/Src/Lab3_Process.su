@@ -1,5 +1,5 @@
-Lab3_Process.c:25:6:Mode_1	8	static
-Lab3_Process.c:112:6:Mode_2	8	static
+Lab3_Process.c:26:6:Mode_1	8	static
+Lab3_Process.c:113:6:Mode_2	8	static
 Lab3_Process.c:129:6:Mode_3	8	static
-Lab3_Process.c:146:6:Mode_4	8	static
-Lab3_Process.c:173:6:Lab3_FSM_Traffic	8	static
+Lab3_Process.c:145:6:Mode_4	8	static
+Lab3_Process.c:174:6:Lab3_FSM_Traffic	8	static
