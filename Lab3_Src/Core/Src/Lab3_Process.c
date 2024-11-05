@@ -253,7 +253,7 @@ void Lab3_FSM_Traffic(void){
 		}
 	}
 	// Action when button 4 is pressed
-	else if (Actual_Button_State[4]) {
+	else if (Actual_Button_State[3]) {
 		HAL_GPIO_WritePin(LED_DEBUG_GPIO_Port, LED_DEBUG_Pin, GPIO_PIN_RESET);
 		switch (Mode_running){
 		case 0: // Do nothing

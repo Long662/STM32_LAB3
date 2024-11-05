@@ -836,9 +836,9 @@ void Lab3_FSM_Traffic(void){
 		}
 	}
 	// Action when button 4 is pressed
-	else if (Actual_Button_State[4]) {
+	else if (Actual_Button_State[3]) {
  8000618:	4b33      	ldr	r3, [pc, #204]	; (80006e8 <Lab3_FSM_Traffic+0x298>)
- 800061a:	791b      	ldrb	r3, [r3, #4]
+ 800061a:	78db      	ldrb	r3, [r3, #3]
  800061c:	2b00      	cmp	r3, #0
  800061e:	d032      	beq.n	8000686 <Lab3_FSM_Traffic+0x236>
 		HAL_GPIO_WritePin(LED_DEBUG_GPIO_Port, LED_DEBUG_Pin, GPIO_PIN_RESET);
